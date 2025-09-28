@@ -12,7 +12,7 @@ const displayCatagories = (catagories) => {
     for (let cat of catagories) {
         const categoryDiv = document.createElement("div")
         categoryDiv.innerHTML = `
-        <button class="btn btn-sm bg-[#25252515] hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
+        <button onclick="loadCategoryVideo(${cat.category_id})" class="btn btn-sm bg-[#25252515] hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
         `
         categoryContainer.append(categoryDiv)
     }
@@ -29,6 +29,7 @@ const loadVideos = () => {
 const displayVideos = (videos) => {
     console.log(videos);
     const displayVideos = document.getElementById("display-video")
+    displayVideos.innerHTML = " "
     videos.forEach(video => {
         const videoCard = document.createElement("div")
         videoCard.innerHTML = `
@@ -48,8 +49,8 @@ const displayVideos = (videos) => {
                 </div>
                 <div class="intro">
                     <h2 class="text-sm font-semibold">${video.title}</h2>
-                    <p class="text-sm text-gray-400 flex gap-1">Awlad Hossain <img class="w-5 h-5" src="https://img.icons8.com/?size=100&id=98A4yZTt9abw&format=png&color=000000" alt=""></p>
-                    <p class="text-sm text-gray-400">91K views</p>
+                    <p class="text-sm text-gray-400 flex gap-1">${video.authors[0].profile_name} <img class="w-5 h-5" src="https://img.icons8.com/?size=100&id=98A4yZTt9abw&format=png&color=000000" alt=""></p>
+                    <p class="text-sm text-gray-400">${video.others.views} views</p>
                 </div>
             </div>
         </div>
@@ -58,6 +59,12 @@ const displayVideos = (videos) => {
     });
 }
 
+// Display video by category 
+const loadCategoryVideo = (categoryId)=>{
+    const categoryApi = `https://openapi.programming-hero.com/api/phero-tube/category/${categoryId}`
+    fetch(categoryApi)
+    .then(res=>res.json())
+    .then(data=>displayVideos(data.category))
+}
 
-loadVideos()
 loadCatagories()
