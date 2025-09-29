@@ -3,7 +3,13 @@ const loadCatagories = () => {
         .then(res => res.json())
         .then(data => displayCatagories(data.categories))
 }
-
+// Remove active class function
+const removeActiveClass = ()=>{
+    const activeBtns = document.getElementsByClassName("active")
+    for(let btn of activeBtns){
+        btn.classList.remove('active')
+    }
+}
 // category_id: '1001',
 // category: 'Music'
 
@@ -12,7 +18,7 @@ const displayCatagories = (catagories) => {
     for (let cat of catagories) {
         const categoryDiv = document.createElement("div")
         categoryDiv.innerHTML = `
-        <button onclick="loadCategoryVideo(${cat.category_id})" class="btn btn-sm bg-[#25252515] hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
+        <button id="btn-${cat.category_id}" onclick="loadCategoryVideo(${cat.category_id})" class="btn btn-sm bg-[#25252515] hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
         `
         categoryContainer.append(categoryDiv)
     }
@@ -22,7 +28,11 @@ const displayCatagories = (catagories) => {
 const loadVideos = () => {
     fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
         .then(res => res.json())
-        .then(data => displayVideos(data.videos))
+        .then(data =>{
+            const btnAll = document.getElementById("btn-all")
+            btnAll.classList.add("active")
+            displayVideos(data.videos)
+        })
 }
 
 
@@ -30,6 +40,15 @@ const displayVideos = (videos) => {
     console.log(videos);
     const displayVideos = document.getElementById("display-video")
     displayVideos.innerHTML = " "
+    if(videos.length == 0){
+        displayVideos.innerHTML =`
+        <div class="col-span-full text-center flex flex-col items-center py-[120px]">
+            <img class="w-[120px]" src="/assets/Icon.png" alt="">
+            <h2 class="text-2xl font-bold">Opps !! Sorry there is no content here...</h2>
+        </div>
+        `
+        return;
+    }
     videos.forEach(video => {
         const videoCard = document.createElement("div")
         videoCard.innerHTML = `
@@ -64,7 +83,13 @@ const loadCategoryVideo = (categoryId)=>{
     const categoryApi = `https://openapi.programming-hero.com/api/phero-tube/category/${categoryId}`
     fetch(categoryApi)
     .then(res=>res.json())
-    .then(data=>displayVideos(data.category))
+    .then(data=>{
+        removeActiveClass()
+        const clickedBtn = document.getElementById(`btn-${categoryId}`)
+        clickedBtn.classList.add("active")
+        
+        displayVideos(data.category)
+    })
 }
 
 loadCatagories()

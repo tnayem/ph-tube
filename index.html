@@ -7,6 +7,12 @@
     <title>PH-TUBE</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .active{
+            background-color: #FF1F3D;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,7 +30,7 @@
         </nav>
     </header>
     <nav id="category-container" class="flex py-5 justify-center gap-5">
-        <button onclick="loadVideos()" class="btn btn-sm bg-[#FF1F3D] text-white">All</button>
+        <button onclick="loadVideos()" id="btn-all" class="btn">All</button>
     </nav>
     <!-- display video container section start -->
     <section id="display-video" class="w-11/12 mx-auto grid grid-cols-4 gap-5">
